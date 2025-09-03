@@ -1,0 +1,11 @@
+.pagination,
+.pagination .flex-fill {
+    background: transparent !important;
+}
+
+.pagination .small.text-muted,
+.pagination p {
+    background: transparent !important;
+    color: #000 !important;   /* hitam biar kebaca */
+    margin: 0;
+}
