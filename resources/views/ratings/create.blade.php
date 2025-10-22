@@ -38,7 +38,7 @@
 
 <script>
     async function loadAuthors() {
-        let res = await fetch(`/api/authors/top`);
+        let res = await fetch(`/api/authors`); // gunakan ini untuk semua author
         let data = await res.json();
         let authorSelect = document.getElementById('author-select');
         authorSelect.innerHTML = '<option value="">-- Choose Author --</option>';
@@ -50,19 +50,38 @@
         });
     }
 
+
     async function filterBooks(authorId) {
-        if(!authorId) return;
-        let res = await fetch(`/api/books/by-author/${authorId}`);
-        let books = await res.json();
         let bookSelect = document.getElementById('book-select');
-        bookSelect.innerHTML = "";
-        books.forEach(b => {
-            let opt = document.createElement('option');
-            opt.value = b.id;
-            opt.text = b.title;
-            bookSelect.appendChild(opt);
-        });
+        bookSelect.innerHTML = '<option>Loading books...</option>';
+
+        if (!authorId) {
+            bookSelect.innerHTML = '<option>-- Select book by author --</option>';
+            return;
+        }
+
+        try {
+            let res = await fetch(`/api/books/by-author/${authorId}`);
+            if (!res.ok) throw new Error('Failed to load books');
+            let books = await res.json();
+
+            bookSelect.innerHTML = "";
+            if (books.length === 0) {
+                bookSelect.innerHTML = '<option>No books found</option>';
+            } else {
+                books.forEach(b => {
+                    let opt = document.createElement('option');
+                    opt.value = b.id;
+                    opt.text = b.title;
+                    bookSelect.appendChild(opt);
+                });
+            }
+        } catch (error) {
+            bookSelect.innerHTML = '<option>Error loading books</option>';
+            console.error(error);
+        }
     }
+
 
     document.getElementById('rating-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -75,12 +94,14 @@
             headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
             body: JSON.stringify(payload)
         });
+
         if(res.ok){
-            alert('Rating submitted!');
+            window.location.href = "{{ route('books.index') }}";
         } else {
             alert('Failed to submit rating');
         }
     });
+
 
     loadAuthors();
 </script>

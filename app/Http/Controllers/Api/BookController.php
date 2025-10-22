@@ -16,7 +16,7 @@ class BookController extends Controller
         $perPage = (int) $request->input('per_page', 10);
         $search  = $request->input('search');
 
-        $books = Book::with('author')
+        $books = Book::with(['author:id,name']) // hanya ambil field penting
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
             ->when($search, function ($q) use ($search) {
