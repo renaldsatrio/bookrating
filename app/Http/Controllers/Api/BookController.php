@@ -16,12 +16,12 @@ class BookController extends Controller
         $perPage = (int) $request->input('per_page', 10);
         $search  = $request->input('search');
 
-        $books = Book::with(['author:id,name']) // hanya ambil field penting
+        $books = Book::with(['author:id,name', 'category:id,name']) // tambah category
             ->withCount('ratings')
             ->withAvg('ratings', 'rating')
             ->when($search, function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhereHas('author', fn ($a) => $a->where('name', 'like', "%{$search}%"));
+                ->orWhereHas('author', fn ($a) => $a->where('name', 'like', "%{$search}%"));
             })
             ->orderByDesc('ratings_avg_rating')
             ->paginate($perPage);
