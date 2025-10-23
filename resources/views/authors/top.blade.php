@@ -27,14 +27,16 @@
         let data = await res.json();
         let tbody = document.getElementById('authors-table');
         tbody.innerHTML = '';
-        data.forEach(author => {
+        data.forEach((author, index) => {
             tbody.innerHTML += `
                 <tr>
+                    <td>${index + 1}</td>
                     <td>${author.name}</td>
                     <td><span class="badge bg-primary">${author.voter_count}</span></td>
                 </tr>
             `;
         });
+
     }
     loadAuthors();
 </script>

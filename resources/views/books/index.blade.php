@@ -26,11 +26,12 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="table-dark">
                 <tr>
+                    <th>No</th>
                     <th>Book Name</th>
                     <th>Category</th>
-                    <th>Author</th>
-                    <th>Voter</th>
+                    <th>Author Name</th>
                     <th>Avg Rating ⭐</th>
+                    <th>Voter</th>
                 </tr>
             </thead>
             <tbody id="books-table">
@@ -54,17 +55,19 @@
 
         let tbody = document.getElementById('books-table');
         tbody.innerHTML = "";
-        data.data.forEach(book => {
+        data.data.forEach((book, index) => {
             tbody.innerHTML += `
                 <tr>
+                    <td>${index + 1}</td>
                     <td>${book.title}</td>
                     <td>${book.category?.name ?? '-'}</td>
                     <td>${book.author?.name ?? '-'}</td>
-                    <td>${book.ratings_count}</td>
                     <td><span class="badge bg-success">${Number(book.ratings_avg_rating).toFixed(2)}</span></td>
+                    <td>${book.ratings_count}</td>
                 </tr>
             `;
         });
+
 
 
         // pagination
