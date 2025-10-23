@@ -9,6 +9,7 @@
             <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
+                        <th>No</th>
                         <th>Author</th>
                         <th>Total Voter</th>
                     </tr>
